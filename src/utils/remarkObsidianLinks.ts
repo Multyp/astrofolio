@@ -64,7 +64,7 @@ export function remarkObsidianLinks() {
   return function transformer(tree: Root) {
     console.log('[remarkObsidianLinks] Transformer running, cache size:', cache.size);
     
-    visit(tree, 'text', (node: Text, index: number | null, parent: Parent | null) => {
+    visit(tree, 'text', (node: Text, index: number | undefined, parent: Parent | undefined) => {
       if (!node.value || !parent || index === null) return;
       
       const obsidianLinkRegex = /\[\[([^\]]+)\]\]/g;
@@ -136,7 +136,7 @@ export function remarkObsidianLinks() {
       }
       
       // Replace the node with new nodes
-      if (newNodes.length > 0) {
+      if (newNodes.length > 0 && index !== undefined) {
         parent.children.splice(index, 1, ...newNodes);
       }
     });

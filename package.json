@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
-    "astro": "^5.15.8"
+    "astro": "^5.15.8",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
+    "@types/mdast": "4.0.4",
     "tailwindcss": "^4.1.17"
   }
 }

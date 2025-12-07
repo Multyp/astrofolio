@@ -1,11 +1,103 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { getAllDocs, buildFolderTree } from '../utils/docs';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const docs = await getAllDocs();
+const tree = buildFolderTree(docs);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Documentation Home">
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container mx-auto px-4 py-16">
+      <header class="text-center mb-16">
+        <h1 class="text-6xl font-bold text-gray-900 mb-4">
+          Documentation
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          Browse through your Obsidian vault structure
+        </p>
+      </header>
+
+      <div class="max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+          <h2 class="text-3xl font-bold mb-6 text-gray-900">Browse Documentation</h2>
+          
+          {tree.children.length > 0 && (
+            <div class="space-y-4">
+              {tree.children.map(folder => (
+                <details class="group" open>
+                  <summary class="cursor-pointer list-none">
+                    <div class="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition">
+                      <svg class="w-5 h-5 mr-3 transform group-open:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                      <svg class="w-6 h-6 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                      </svg>
+                      <span class="font-semibold text-lg text-gray-900">{folder.name}</span>
+                      <span class="ml-auto text-sm text-gray-500">
+                        {folder.files.length} {folder.files.length === 1 ? 'page' : 'pages'}
+                      </span>
+                    </div>
+                  </summary>
+                  
+                  <div class="ml-8 mt-2 space-y-2">
+                    {folder.files.map(file => (
+                      <a 
+                        href={file.path}
+                        class="block p-3 pl-6 hover:bg-blue-50 rounded-lg transition group"
+                      >
+                        <div class="flex items-center">
+                          <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          <span class="text-gray-700 group-hover:text-blue-600 font-medium">
+                            {file.title}
+                          </span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </details>
+              ))}
+            </div>
+          )}
+
+          {tree.files.length > 0 && (
+            <div class="mt-8">
+              <h3 class="text-xl font-semibold mb-4 text-gray-900">Root Pages</h3>
+              <div class="space-y-2">
+                {tree.files.map(file => (
+                  <a 
+                    href={file.path}
+                    class="block p-3 hover:bg-blue-50 rounded-lg transition group"
+                  >
+                    <div class="flex items-center">
+                      <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <span class="text-gray-700 group-hover:text-blue-600 font-medium">
+                        {file.title}
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {docs.length === 0 && (
+            <div class="text-center py-12">
+              <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <p class="text-gray-600 text-lg">No documentation pages found.</p>
+              <p class="text-gray-500 mt-2">Add markdown files to <code class="bg-gray-100 px-2 py-1 rounded">src/content/docs/</code></p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>
+---

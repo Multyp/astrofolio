@@ -1,0 +1,49 @@
+---
+import { getAllDocs, buildFolderTree, type FolderNode } from '../utils/docs';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const docs = await getAllDocs();
+const tree = buildFolderTree(docs);
+
+function renderFolder(folder: FolderNode, depth = 0): string {
+  return `
+    <div class="mb-2">
+      ${folder.name !== 'root' ? `
+        <div class="font-semibold text-gray-900 mb-2 ${depth > 0 ? 'ml-' + (depth * 4) : ''}">
+          ${folder.name}
+        </div>
+      ` : ''}
+      ${folder.files.map((file: typeof folder.files[0]) => `
+        <a 
+          href="${file.path}"
+          class="block py-2 px-3 rounded ${depth > 0 ? 'ml-' + (depth * 4) : ''} ${
+            currentPath === file.path 
+              ? 'bg-blue-100 text-blue-700 font-medium' 
+              : 'text-gray-700 hover:bg-gray-100'
+          }"
+        >
+          ${file.title}
+        </a>
+      `).join('')}
+      ${folder.children.map((child: FolderNode) => renderFolder(child, depth + 1)).join('')}
+    </div>
+  `;
+}
+---
+
+<aside class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 overflow-y-auto">
+  <div class="p-6">
+    <a href="/" class="block mb-6">
+      <h2 class="text-2xl font-bold text-gray-900">Docs</h2>
+    </a>
+    
+    <nav>
+      <div set:html={renderFolder(tree)} />
+    </nav>
+  </div>
+</aside>
+---

@@ -1,0 +1,68 @@
+---
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  return docs.map((doc: typeof docs[number]) => ({
+    params: { slug: doc.slug },
+    props: { doc },
+  }));
+}
+
+const { slug } = Astro.params;
+const { doc } = Astro.props as { doc: CollectionEntry<'docs'> };
+
+const { Content } = await doc.render();
+const title = doc.data.title || doc.slug.split('/').pop();
+---
+
+<Layout title={title}>
+  <div class="flex min-h-screen bg-gray-50">
+    <Sidebar currentPath={`/docs/${slug}`} />
+    
+    <main class="flex-1 p-8 ml-64">
+      <article class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <h1 class="text-4xl font-bold mb-6 text-gray-900">{title}</h1>
+        {doc.data.description && (
+          <p class="text-lg text-gray-600 mb-8">{doc.data.description}</p>
+        )}
+        <div class="prose prose-lg max-w-none">
+          <Content />
+        </div>
+      </article>
+    </main>
+  </div>
+</Layout>
+
+<style is:global>
+  @reference "../../styles/global.css";
+  .prose {
+    @apply text-gray-700;
+  }
+  .prose h2 {
+    @apply text-2xl font-bold mt-8 mb-4 text-gray-900;
+  }
+  .prose h3 {
+    @apply text-xl font-semibold mt-6 mb-3 text-gray-900;
+  }
+  .prose p {
+    @apply mb-4 leading-relaxed;
+  }
+  .prose code {
+    @apply bg-gray-100 px-1 py-0.5 rounded text-sm;
+  }
+  .prose pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+  }
+  .prose a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  .prose ul, .prose ol {
+    @apply mb-4 pl-6;
+  }
+  .prose li {
+    @apply mb-2;
+  }
+</style>

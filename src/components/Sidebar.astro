@@ -161,21 +161,25 @@ function renderFolder(folder: FolderNode, depth = 0): string {
     
     // Folder toggle functionality
     toggleButtons.forEach(button => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
         const targetId = button.getAttribute('aria-controls');
         const target = targetId ? document.getElementById(targetId) : null;
         const icon = button.querySelector<SVGElement>('.folder-chevron');
         
         if (target && icon) {
-          button.setAttribute('aria-expanded', String(!isExpanded));
+          const newExpandedState = !isExpanded;
+          button.setAttribute('aria-expanded', String(newExpandedState));
           
-          if (isExpanded) {
-            target.classList.add('folder-collapsed');
-            icon.style.transform = 'rotate(-90deg)';
-          } else {
-            target.classList.remove('folder-collapsed');
+          if (newExpandedState) {
+            target.style.display = 'block';
             icon.style.transform = 'rotate(0deg)';
+          } else {
+            target.style.display = 'none';
+            icon.style.transform = 'rotate(-90deg)';
           }
         }
       });
@@ -270,10 +274,6 @@ function renderFolder(folder: FolderNode, depth = 0): string {
 <style>
   .folder-content {
     overflow: visible;
-  }
-
-  .folder-content.folder-collapsed {
-    display: none;
   }
 
   /* Custom scrollbar */

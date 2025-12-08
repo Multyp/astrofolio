@@ -17,19 +17,21 @@ function renderFolder(folder: FolderNode, depth = 0): string {
     <div class="mb-1" data-folder>
       ${!isRoot ? `
         <button 
-          class="flex items-center w-full py-2 px-3 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-1"
+          class="flex items-center w-full py-2 px-3 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           style="margin-left: ${depth * 16}px"
           aria-expanded="true"
           aria-controls="${folderId}"
           data-folder-toggle
+          id="toggle-${folderId}"
         >
-          <svg class="w-4 h-4 mr-2 transition-transform text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 mr-2 transition-transform duration-200 text-slate-400 folder-chevron" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
           <svg class="w-4 h-4 mr-2 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
           </svg>
           <span>${folder.name}</span>
+          <span class="sr-only">toggle folder</span>
         </button>
       ` : ''}
       
@@ -39,10 +41,10 @@ function renderFolder(folder: FolderNode, depth = 0): string {
           return `
             <a 
               href="${file.path}"
-              class="flex items-center py-2 px-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-1 ${
+              class="flex items-center py-2 px-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
                 isActive 
-                  ? 'bg-indigo-100 text-indigo-900 font-medium' 
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'bg-indigo-100 text-indigo-900 font-semibold' 
+                  : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
               }"
               style="margin-left: ${(depth + (!isRoot ? 1 : 0)) * 16}px"
               ${isActive ? 'aria-current="page"' : ''}
@@ -65,30 +67,33 @@ function renderFolder(folder: FolderNode, depth = 0): string {
 ---
 
 <aside 
-  class="fixed left-0 top-0 h-screen w-72 bg-slate-50 border-r border-slate-200 overflow-hidden flex flex-col shadow-sm transition-transform duration-300"
+  class="fixed left-0 top-0 h-screen w-82 bg-white border-r border-slate-200 flex flex-col shadow-sm transition-transform duration-300 z-40"
   role="navigation"
   aria-label="Documentation navigation"
   id="docs-sidebar"
 >
   <!-- Header -->
   <div class="p-6 border-b border-slate-200 flex-shrink-0 bg-white">
-    <a 
-      href="/" 
-      class="block group focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 rounded-lg"
-    >
-      <h2 class="text-2xl font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
-        📚 Docs
-      </h2>
-    </a>
+    <div class="flex items-center justify-between">
+      <a 
+        href="/" 
+        class="block group focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-lg"
+      >
+        <h2 class="text-2xl font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
+          📚 Docs
+        </h2>
+      </a>
+    </div>
   </div>
 
   <!-- Search Box -->
   <div class="p-4 border-b border-slate-200 flex-shrink-0 bg-white">
     <div class="relative">
+      <label for="docs-search" class="sr-only">Search documentation</label>
       <input
         type="search"
         placeholder="Search docs..."
-        class="w-full py-2 pl-10 pr-4 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent text-slate-700 placeholder-slate-400"
+        class="w-full py-2 pl-10 pr-4 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-700 placeholder-slate-400"
         aria-label="Search documentation"
         id="docs-search"
       />
@@ -105,30 +110,33 @@ function renderFolder(folder: FolderNode, depth = 0): string {
   </div>
   
   <!-- Navigation Content -->
-  <nav class="flex-1 overflow-y-auto p-4 bg-white" aria-label="Documentation sections">
+  <nav 
+    class="flex-1 overflow-y-auto overflow-x-hidden pt-4 pb-4 pr-4 pl-4 bg-white"
+    style="min-height: 0;"
+    aria-label="Documentation sections"
+    id="sidebar-nav"
+  >
     <div set:html={renderFolder(tree)} />
   </nav>
 
   <!-- Footer -->
   <div class="p-4 border-t border-slate-200 flex-shrink-0 bg-white">
     <button
-      class="w-full py-2 px-4 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-300"
+      class="flex items-center justify-center w-full py-2 px-4 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
       aria-label="Collapse sidebar"
       id="collapse-sidebar"
     >
-      <span class="flex items-center justify-center">
-        <svg class="w-4 h-4 mr-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-        </svg>
-        Collapse sidebar
-      </span>
+      <svg class="w-4 h-4 mr-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+      </svg>
+      Collapse sidebar
     </button>
   </div>
 </aside>
 
 <!-- Sidebar toggle button (visible when collapsed) -->
 <button
-  class="fixed left-0 top-1/2 transform -translate-y-1/2 bg-white border border-slate-200 rounded-r-lg p-2 shadow-md hover:bg-slate-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 z-50 opacity-0 pointer-events-none"
+  class="fixed left-0 top-1/2 transform -translate-y-1/2 bg-white border border-slate-200 rounded-r-lg p-2 shadow-md hover:bg-slate-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 z-50 hidden"
   aria-label="Open sidebar"
   id="open-sidebar"
   style="margin-left: -4px;"
@@ -139,25 +147,44 @@ function renderFolder(folder: FolderNode, depth = 0): string {
 </button>
 
 <script>
+  // Type-safe wrapper to get elements
+  function getElement<T extends HTMLElement>(id: string): T | null {
+    return document.getElementById(id) as T | null;
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.getElementById('docs-sidebar');
-    const collapseSidebar = document.getElementById('collapse-sidebar');
-    const openSidebar = document.getElementById('open-sidebar');
-    const toggleButtons = document.querySelectorAll('[data-folder-toggle]');
-    const searchInput = document.getElementById('docs-search') as HTMLInputElement;
+    const sidebar = getElement<HTMLDivElement>('docs-sidebar');
+    const collapseSidebar = getElement<HTMLButtonElement>('collapse-sidebar');
+    const openSidebar = getElement<HTMLButtonElement>('open-sidebar');
+    const toggleButtons = document.querySelectorAll<HTMLButtonElement>('[data-folder-toggle]');
+    const searchInput = getElement<HTMLInputElement>('docs-search');
     
     // Folder toggle functionality
     toggleButtons.forEach(button => {
       button.addEventListener('click', () => {
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
         const targetId = button.getAttribute('aria-controls');
-        const target = document.getElementById(targetId!);
-        const icon = button.querySelector('svg');
+        const target = targetId ? document.getElementById(targetId) : null;
+        const icon = button.querySelector<SVGElement>('.folder-chevron');
         
         if (target && icon) {
           button.setAttribute('aria-expanded', String(!isExpanded));
-          target.style.display = isExpanded ? 'none' : 'block';
-          icon.style.transform = isExpanded ? 'rotate(-90deg)' : 'rotate(0deg)';
+          
+          if (isExpanded) {
+            target.classList.add('folder-collapsed');
+            icon.style.transform = 'rotate(-90deg)';
+          } else {
+            target.classList.remove('folder-collapsed');
+            icon.style.transform = 'rotate(0deg)';
+          }
+        }
+      });
+
+      // Keyboard support
+      button.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          button.click();
         }
       });
     });
@@ -166,60 +193,72 @@ function renderFolder(folder: FolderNode, depth = 0): string {
     if (collapseSidebar && openSidebar && sidebar) {
       collapseSidebar.addEventListener('click', () => {
         sidebar.classList.add('-translate-x-full');
-        openSidebar.classList.remove('opacity-0', 'pointer-events-none');
-        openSidebar.classList.add('opacity-100');
+        openSidebar.classList.remove('hidden');
+        openSidebar.classList.add('block');
+        document.dispatchEvent(new CustomEvent('sidebar-collapsed'));
       });
       
       openSidebar.addEventListener('click', () => {
         sidebar.classList.remove('-translate-x-full');
-        openSidebar.classList.add('opacity-0', 'pointer-events-none');
-        openSidebar.classList.remove('opacity-100');
+        openSidebar.classList.add('hidden');
+        openSidebar.classList.remove('block');
+        document.dispatchEvent(new CustomEvent('sidebar-expanded'));
       });
     }
 
     // Search functionality
     if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        const searchTerm = (e.target as HTMLInputElement).value.toLowerCase().trim();
-        const links = document.querySelectorAll('[data-doc-link]');
-        const folders = document.querySelectorAll('[data-folder]');
+      searchInput.addEventListener('input', (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        const searchTerm = target.value.toLowerCase().trim();
+        const links = document.querySelectorAll<HTMLAnchorElement>('[data-doc-link]');
+        const folders = document.querySelectorAll<HTMLDivElement>('[data-folder]');
         
         if (searchTerm === '') {
           // Reset visibility
           links.forEach(link => {
-            (link as HTMLElement).style.display = 'flex';
+            link.style.display = 'flex';
           });
           folders.forEach(folder => {
-            (folder as HTMLElement).style.display = 'block';
+            folder.style.display = 'block';
           });
         } else {
           // Hide all folders first
           folders.forEach(folder => {
-            (folder as HTMLElement).style.display = 'none';
+            folder.style.display = 'none';
           });
           
           // Show matching links and their parent folders
           links.forEach(link => {
             const title = link.getAttribute('data-doc-title') || '';
             if (title.includes(searchTerm)) {
-              (link as HTMLElement).style.display = 'flex';
+              link.style.display = 'flex';
               
               // Show all parent folders
-              let parent = link.closest('[data-folder]');
+              let parent = link.closest<HTMLDivElement>('[data-folder]');
               while (parent) {
-                (parent as HTMLElement).style.display = 'block';
-                parent = parent.parentElement?.closest('[data-folder]');
+                parent.style.display = 'block';
+                parent = parent.parentElement?.closest<HTMLDivElement>('[data-folder]') || null;
               }
             } else {
-              (link as HTMLElement).style.display = 'none';
+              link.style.display = 'none';
             }
           });
+        }
+      });
+
+      // Clear search on Escape
+      searchInput.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && searchInput.value) {
+          e.stopPropagation();
+          searchInput.value = '';
+          searchInput.dispatchEvent(new Event('input'));
         }
       });
     }
 
     // Auto-scroll active item into view
-    const activeLink = document.querySelector('[aria-current="page"]');
+    const activeLink = document.querySelector<HTMLAnchorElement>('[aria-current="page"]');
     if (activeLink) {
       setTimeout(() => {
         activeLink.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -230,7 +269,11 @@ function renderFolder(folder: FolderNode, depth = 0): string {
 
 <style>
   .folder-content {
-    display: block;
+    overflow: visible;
+  }
+
+  .folder-content.folder-collapsed {
+    display: none;
   }
 
   /* Custom scrollbar */

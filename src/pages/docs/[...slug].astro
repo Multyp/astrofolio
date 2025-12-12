@@ -15,6 +15,9 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { doc } = Astro.props;
 
+// Respect configured base path
+const BASE = import.meta.env.BASE_URL ?? '/';
+
 // Get all docs for link processing
 const allDocs = await getAllDocs();
 
@@ -24,7 +27,7 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
 
 <Layout title={title}>
   <div class="min-h-screen bg-gray-50 transition-all duration-300 ease-in-out" id="docs-container">
-    <Sidebar currentPath={`/docs/${slug}`} />
+    <Sidebar currentPath={`${BASE}docs/${slug}`} />
     
     <!-- Mobile header with menu button -->
     <header class="lg:hidden sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-3">
@@ -59,7 +62,7 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
         <nav class="mb-6" aria-label="Breadcrumb">
           <ol class="flex items-center space-x-2 text-sm text-gray-600">
             <li>
-              <a href="/docs" class="hover:text-indigo-600 focus:outline-none focus:text-indigo-600">Documentation</a>
+              <a href={`${BASE}docs`} class="hover:text-indigo-600 focus:outline-none focus:text-indigo-600">Documentation</a>
             </li>
             <li class="flex items-center">
               <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">

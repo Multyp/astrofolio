@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Respect configured base path from Vite/Astro
+const BASE = import.meta.env.BASE_URL ?? '/';
+
 // Normalize function - removes spaces, commas, and special chars
 function normalize(str: string): string {
   return str.toLowerCase().replace(/[,\s]+/g, '-');
@@ -41,7 +44,7 @@ function buildDocsCache(): Map<string, string> {
           .map(part => normalize(part))
           .join('/');
         
-        const url = `/docs/${slug}`;
+        const url = `${BASE}docs/${slug}`;
         const fileName = path.basename(file, path.extname(file));
         
         // Store with normalized filename as key

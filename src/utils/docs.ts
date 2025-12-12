@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
-import path from 'path';
 
+// Use Vite/Astro base URL so generated paths respect `astro.config.mjs` `base`
+const BASE = import.meta.env.BASE_URL ?? '/';
 export interface DocPage {
   slug: string;
   title: string;
@@ -31,7 +32,7 @@ export async function getAllDocs(): Promise<DocPage[]> {
       slug: doc.slug,
       title,
       displayTitle,
-      path: `/docs/${doc.slug}`,
+      path: `${BASE}docs/${doc.slug}`,
       depth: parts.length - 1,
       parent: parts.length > 1 ? parts.slice(0, -1).join('/') : undefined,
     };

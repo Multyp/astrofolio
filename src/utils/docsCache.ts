@@ -4,6 +4,9 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Respect configured base path from Vite/Astro
+const BASE = import.meta.env.BASE_URL ?? '/';
+
 export interface DocsCacheEntry {
   fileName: string;
   fullPath: string;
@@ -44,7 +47,7 @@ export function generateDocsCache(): Map<string, string> {
           .map(part => normalizeForCache(part))
           .join('/');
         
-        const url = `/docs/${slug}`;
+        const url = `${BASE}docs/${slug}`;
         
         // Get the filename without extension
         const fileName = path.basename(file, path.extname(file));

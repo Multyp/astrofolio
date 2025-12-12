@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { remarkObsidianLinks } from './src/utils/remarkObsidianLinks';
 
 export default defineConfig({
+  base: '/astrofolio/',
   vite: {
     plugins: [tailwindcss()],
   },

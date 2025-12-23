@@ -29,10 +29,16 @@ From the first dusts of Elothir, the **[[Elves]]** appeared, shaped by Rethane�
 
 ### Humans
 
-As life spread farther from Elothir’s trunk, the **[[Humans]]** emerged. They began as an experiment of Lothas, moulded from soil he had shaped in raising mountains, the so-called “imperfect clay.” Lothas could not complete them, but Rethane, admiring his work, breathed vigour into these forms, granting them life, adaptability, and a land to prosper. Unlike dwarves, whose bodies and spirits were shaped with precise care, humans carry a blend of intention and chance, giving them a restless energy and the capacity to thrive in unpredictable ways.
+Far from Elothir’s trunk, where its drifting dust thinned and its guidance grew faint, the same process that gave rise to the elves unfolded with lesser intensity. From this distant dust, the **[[Humans]]** emerged, formed through the same harmony of Lothas and Rethane, yet touched by a weaker current of divine intent.
+
+Their bodies were not sculpted, nor assembled, but grown, much like those of the elves. However, the magic that shaped them lacked the depth and stability granted by proximity to the World Tree. As a result, humans did not inherit longevity, innate arcane acuity, or a fixed nature. Where elves were sustained by lingering divine alignment, humans were left to complete themselves through time.
+
+This diminished imprint did not cripple them, it compelled them to adapt. Their brief lives fostered learning, experimentation, and change. Without instinctive mastery of magic, humans learned to study it, to formalise patterns that elves felt intuitively. Thus arose the distinction within their kind: some were born with magic that surfaced unpredictably, echoes of unstable divine influence, while others pursued knowledge and discipline to grasp what did not come naturally.
+
+In this way, humans became a people defined not by what they were given, but by what they learned to build. Shaped by the same origin as the elves, yet freed from its certainty, they evolved into a race of invention, ambition, and relentless motion, adapted to survive where divine guidance faded and the world demanded intent of its own.
 ### Dwarves
 
-Deep beneath the roots, where stone met the oldest echoes of Lothas’ power, the **[[Dwarves]]** took form. They were sculpted by Lothas himself, unfinished statues that Rethane later animated with the heartbeat of the earth. Though Lothas and Rethane always worked in harmony, each acted according to their nature: Lothas shaped, Rethane gave life. Their bodies carry fragments of the mountains, and their culture still revolves around craft, tradition, and memory.
+Deep within the roots of Elothir, where stone met the oldest echoes of Lothas’ power, the **[[Dwarves]]** took form. Shaped directly by Lothas from stone, they were stirred to life by Rethane’s essence flowing through the roots, becoming the first race whose sentience arose from deliberate craftsmanship rather than drifting dust.
 ### Beastfolks
 
 In the far deserts, where Rethane’s life-essence mingled with remnants of the Void Sea, the first **[[Beastfolks]]** appeared. They were born from dust of Elothir infused with raw chaos, a mixture of order and wildness. Many clan lineages still claim descent from specific desert beasts: jackals, lions, scaled lizards, and great birds of prey. Their unusual origin, part tree, part Void, often places them at odds with elves, who claim ancestral rights over the desert and pride themselves on their closeness to Rethane.

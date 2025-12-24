@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Respect configured base path from Vite/Astro
-const BASE = import.meta.env.BASE_URL ?? '/';
+const BASE = process.env.BASE_URL || import.meta.env.BASE_URL || '/astrofolio/';
 
 // Normalize function - removes spaces, commas, and special chars
 function normalize(str: string): string {

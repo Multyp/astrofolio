@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import ThemeSettings from '../../components/ThemeSettings.astro';
 import { getAllDocs, processObsidianLinks } from '../../utils/docs';
 
 export async function getStaticPaths() {
@@ -26,15 +27,16 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
 ---
 
 <Layout title={title}>
-  <div class="min-h-screen bg-gray-50 transition-all duration-300 ease-in-out" id="docs-container">
+  <div class="min-h-screen transition-all duration-300 ease-in-out themed-bg" id="docs-container">
     <Sidebar currentPath={`${BASE}docs/${slug}`} />
+    <ThemeSettings />
     
     <!-- Mobile header with menu button -->
-    <header class="lg:hidden sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-3">
+    <header class="lg:hidden sticky top-0 z-20 themed-sidebar-bg themed-border-b px-4 py-3">
       <div class="flex items-center justify-between">
         <a 
           href="/" 
-          class="text-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded"
+          class="text-lg font-semibold themed-text-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded"
         >
           📚 Docs
         </a>
@@ -46,25 +48,25 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
       id="main-content"
       role="main"
     >
-      <article class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-6 lg:p-8">
+      <article class="max-w-5xl mx-auto themed-article rounded-lg themed-shadow p-6 lg:p-8">
         <!-- Breadcrumb navigation -->
         <nav class="mb-6" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-gray-600">
+          <ol class="flex items-center space-x-2 text-sm themed-text-secondary">
             <li>
-              <a href={`${BASE}docs`} class="hover:text-indigo-600 focus:outline-none focus:text-indigo-600">Documentation</a>
+              <a href={`${BASE}docs`} class="themed-link focus:outline-none">Documentation</a>
             </li>
             <li class="flex items-center">
               <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
-              <span class="ml-2 text-gray-900 font-medium" aria-current="page">{title}</span>
+              <span class="ml-2 themed-text-primary font-medium" aria-current="page">{title}</span>
             </li>
           </ol>
         </nav>
         
-        <h1 class="text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-gray-900" id="main-heading">{title}</h1>
+        <h1 class="text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 themed-text-primary" id="main-heading">{title}</h1>
         {doc.data.description && (
-          <p class="text-lg text-gray-600 mb-6 lg:mb-8">{doc.data.description}</p>
+          <p class="text-lg themed-text-secondary mb-6 lg:mb-8">{doc.data.description}</p>
         )}
         <div class="prose prose-lg max-w-none markdown-content" id="doc-content">
           <Content />
@@ -75,7 +77,50 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
 </Layout>
 
 <style is:global>
-  @reference "../../styles/global.css";
+  /* Themed classes */
+  .themed-bg {
+    background-color: var(--theme-bgSecondary);
+  }
+  
+  .themed-article {
+    background-color: var(--theme-bgPrimary);
+  }
+  
+  .themed-text-primary {
+    color: var(--theme-textPrimary);
+  }
+  
+  .themed-text-secondary {
+    color: var(--theme-textSecondary);
+  }
+  
+  .themed-text-tertiary {
+    color: var(--theme-textTertiary);
+  }
+  
+  .themed-border {
+    border-color: var(--theme-borderPrimary);
+  }
+  
+  .themed-border-b {
+    border-bottom-color: var(--theme-borderPrimary);
+  }
+  
+  .themed-sidebar-bg {
+    background-color: var(--theme-sidebarBg);
+  }
+  
+  .themed-shadow {
+    box-shadow: 0 1px 3px var(--theme-shadow);
+  }
+  
+  .themed-link {
+    color: var(--theme-linkColor);
+  }
+  
+  .themed-link:hover {
+    color: var(--theme-linkHover);
+  }
   
   /* Responsive content width */
   #docs-container {
@@ -84,7 +129,7 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
   
   @media (min-width: 1024px) {
     #docs-container:not(.sidebar-collapsed) {
-      padding-left: 18rem; /* Sidebar width */
+      padding-left: 18rem;
     }
   }
   
@@ -103,43 +148,111 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
     }
   }
   
-  /* Typography */
+  /* Typography with theme support */
   .prose {
-    @apply text-gray-700;
+    color: var(--theme-textPrimary);
   }
+  
   .prose h2 {
-    @apply text-2xl font-bold mt-8 mb-4 text-gray-900;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--theme-textPrimary);
   }
+  
   .prose h3 {
-    @apply text-xl font-semibold mt-6 mb-3 text-gray-900;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--theme-textPrimary);
   }
+  
   .prose p {
-    @apply mb-4 leading-relaxed;
+    margin-bottom: 1rem;
+    line-height: 1.75;
+    color: var(--theme-textSecondary);
   }
+  
   .prose code {
-    @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background-color: var(--theme-codeInline);
+    color: var(--theme-textPrimary);
   }
+  
   .prose pre {
-    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    background-color: var(--theme-codeBg);
+    color: var(--theme-codeText);
   }
+  
   .prose a {
-    @apply text-indigo-600 hover:text-indigo-800 underline focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded;
+    text-decoration: underline;
+    border-radius: 0.25rem;
+    color: var(--theme-linkColor);
   }
+  
+  .prose a:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #6366f1;
+  }
+  
+  .prose a:hover {
+    color: var(--theme-linkHover);
+  }
+  
   .prose ul, .prose ol {
-    @apply mb-4 pl-6;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
   }
+  
   .prose li {
-    @apply mb-2;
+    margin-bottom: 0.5rem;
+    color: var(--theme-textSecondary);
   }
   
   /* Focus styles */
   .prose a:focus {
-    @apply no-underline;
+    text-decoration: none;
   }
   
   /* Skip to main content link */
   .skip-to-main {
-    @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-indigo-600 focus:font-semibold focus:rounded-lg focus:ring-2 focus:ring-indigo-500;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    background-color: var(--theme-bgPrimary);
+    color: var(--theme-accentPrimary);
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+  .skip-to-main:focus {
+    clip: auto;
+    height: auto;
+    width: auto;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    overflow: visible;
+    white-space: normal;
+    box-shadow: 0 0 0 2px #6366f1;
   }
   
   /* Mobile optimizations */
@@ -207,6 +320,7 @@ const title = doc.data.title || doc.slug.split('/').pop()?.replace(/-/g, ' ') ||
         #mobile-menu-toggle,
         #mobile-menu-button,
         #expand-sidebar,
+        #theme-settings-button,
         nav[aria-label="Document navigation"] {
           display: none !important;
         }

@@ -15,12 +15,12 @@ export interface FolderNode {
 const { folder, depth = 0 } = Astro.props;
 ---
 
-<details class="[&:not(:first-child)]:mt-4" open>
+<details class="folder-details [&:not(:first-child)]:mt-4" open>
   <summary class="cursor-pointer list-none">
-    <div class="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+    <div class="folder-summary flex items-center p-4 rounded-lg transition-colors">
       <!-- Chevron for rotation -->
       <svg 
-        class="w-5 h-5 mr-3 transform transition-transform flex-shrink-0"
+        class="folder-chevron w-5 h-5 mr-3 transform transition-transform flex-shrink-0"
         fill="none" stroke="currentColor" viewBox="0 0 24 24"
       >
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -28,37 +28,37 @@ const { folder, depth = 0 } = Astro.props;
 
       <!-- Folder icon -->
       <svg 
-        class="w-6 h-6 mr-3 text-blue-600 flex-shrink-0"
+        class="folder-icon w-6 h-6 mr-3 flex-shrink-0"
         fill="none" stroke="currentColor" viewBox="0 0 24 24"
       >
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
       </svg>
 
       <!-- Folder name -->
-      <span class="font-semibold text-lg text-gray-900">{folder.name}</span>
+      <span class="folder-name font-semibold text-lg">{folder.name}</span>
 
       <!-- File count -->
-      <span class="ml-auto text-sm text-gray-500">
+      <span class="folder-count ml-auto text-sm">
         {folder.files.length} {folder.files.length === 1 ? 'page' : 'pages'}
       </span>
     </div>
   </summary>
 
-  <div class="mt-2 ml-6 pl-6 border-l border-gray-200">
+  <div class="folder-content mt-2 ml-6 pl-6 themed-border-l">
     <!-- Files -->
     <div class="space-y-2">
       {folder.files.map((file: File) => (
         <a
           href={file.path.endsWith('/') ? file.path : `${file.path}/`}
-          class="group flex items-center p-3 pl-6 rounded-lg transition-colors hover:bg-blue-50"
+          class="folder-file-link group flex items-center p-3 pl-6 rounded-lg transition-colors"
         >
           <svg
-            class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-600 flex-shrink-0"
+            class="folder-file-icon w-5 h-5 mr-3 flex-shrink-0"
             fill="none" stroke="currentColor" viewBox="0 0 24 24"
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <span class="text-gray-700 group-hover:text-blue-600 font-medium">{file.title}</span>
+          <span class="folder-file-title font-medium">{file.title}</span>
         </a>
       ))}
     </div>
@@ -72,9 +72,58 @@ const { folder, depth = 0 } = Astro.props;
   </div>
 </details>
 
-<style>
-/* Chevron rotation when details is open */
-details[open] > summary svg:first-child {
-  transform: rotate(90deg);
-}
+<style is:global>
+  /* Folder component theming */
+  .folder-summary {
+    background-color: var(--theme-bgTertiary);
+  }
+  
+  .folder-summary:hover {
+    background-color: var(--theme-sidebarHover);
+  }
+  
+  .folder-chevron {
+    color: var(--theme-textSecondary);
+  }
+  
+  .folder-icon {
+    color: var(--theme-accentPrimary);
+  }
+  
+  .folder-name {
+    color: var(--theme-textPrimary);
+  }
+  
+  .folder-count {
+    color: var(--theme-textTertiary);
+  }
+  
+  .themed-border-l {
+    border-left: 1px solid var(--theme-borderPrimary);
+  }
+  
+  .folder-file-link {
+    color: var(--theme-textPrimary);
+  }
+  
+  .folder-file-link:hover {
+    background-color: var(--theme-bgTertiary);
+  }
+  
+  .folder-file-icon {
+    color: var(--theme-textTertiary);
+  }
+  
+  .folder-file-link:hover .folder-file-icon {
+    color: var(--theme-accentPrimary);
+  }
+  
+  .folder-file-link:hover .folder-file-title {
+    color: var(--theme-accentPrimary);
+  }
+
+  /* Chevron rotation when details is open */
+  .folder-details[open] > summary .folder-chevron {
+    transform: rotate(90deg);
+  }
 </style>

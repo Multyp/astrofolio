@@ -1,0 +1,231 @@
+---
+import { themes } from '../utils/themes';
+---
+
+<!-- Theme Settings Button (Gear Icon) -->
+<button
+  id="theme-settings-button"
+  class="fixed top-4 right-4 z-50 p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  aria-label="Open theme settings"
+  type="button"
+>
+  <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+</button>
+
+<!-- Theme Settings Modal -->
+<div
+  id="theme-settings-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+>
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+      <h2 id="modal-title" class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+        Theme Settings
+      </h2>
+      <button
+        id="close-modal-button"
+        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        aria-label="Close settings"
+        type="button"
+      >
+        <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Modal Content -->
+    <div class="p-6">
+      <p class="text-gray-600 dark:text-gray-400 mb-6">
+        Choose your preferred theme for the documentation
+      </p>
+
+      <!-- Theme Options -->
+      <div class="space-y-3" role="radiogroup" aria-label="Theme selection">
+        {themes.map((theme) => (
+          <button
+            type="button"
+            class="theme-option w-full flex items-center justify-between p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-indigo-500 dark:hover:border-indigo-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            data-theme-id={theme.id}
+            role="radio"
+            aria-checked="false"
+          >
+            <div class="flex items-center space-x-4">
+              <span class="text-3xl" aria-hidden="true">{theme.icon}</span>
+              <div class="text-left">
+                <div class="font-semibold text-gray-900 dark:text-gray-100">
+                  {theme.name}
+                </div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                  {theme.id === 'light' ? 'Classic bright theme' : 'Easy on the eyes'}
+                </div>
+              </div>
+            </div>
+            <div class="theme-check hidden">
+              <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="p-6 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+      <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+        Your preference will be saved locally
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { getThemeOrDefault } from '../utils/themes';
+  
+  // Theme management
+  const STORAGE_KEY = 'docs-theme';
+  
+  function getCurrentTheme(): string {
+    if (typeof localStorage === 'undefined') return 'light';
+    return localStorage.getItem(STORAGE_KEY) || 'light';
+  }
+  
+  function setTheme(themeId: string) {
+    const theme = getThemeOrDefault(themeId);
+    
+    // Apply CSS variables
+    const root = document.documentElement;
+    Object.entries(theme.colors).forEach(([key, value]) => {
+      root.style.setProperty(`--theme-${key}`, value);
+    });
+    
+    // Save to localStorage
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, themeId);
+    }
+    
+    // Update active state in modal
+    document.querySelectorAll('.theme-option').forEach((btn) => {
+      const button = btn as HTMLButtonElement;
+      const isActive = button.dataset.themeId === themeId;
+      
+      button.setAttribute('aria-checked', String(isActive));
+      
+      if (isActive) {
+        button.classList.add('border-indigo-500', 'dark:border-indigo-400', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+        button.classList.remove('border-gray-200', 'dark:border-gray-700');
+        button.querySelector('.theme-check')?.classList.remove('hidden');
+      } else {
+        button.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+        button.classList.add('border-gray-200', 'dark:border-gray-700');
+        button.querySelector('.theme-check')?.classList.add('hidden');
+      }
+    });
+  }
+  
+  // Modal management
+  function openModal() {
+    const modal = document.getElementById('theme-settings-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      
+      // Focus first theme option
+      const firstOption = modal.querySelector('.theme-option') as HTMLButtonElement;
+      firstOption?.focus();
+    }
+  }
+  
+  function closeModal() {
+    const modal = document.getElementById('theme-settings-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      
+      // Return focus to settings button
+      document.getElementById('theme-settings-button')?.focus();
+    }
+  }
+  
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    // Apply saved theme
+    const currentTheme = getCurrentTheme();
+    setTheme(currentTheme);
+    
+    // Open modal button
+    const openButton = document.getElementById('theme-settings-button');
+    openButton?.addEventListener('click', openModal);
+    
+    // Close modal button
+    const closeButton = document.getElementById('close-modal-button');
+    closeButton?.addEventListener('click', closeModal);
+    
+    // Close on backdrop click
+    const modal = document.getElementById('theme-settings-modal');
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+    
+    // Theme selection
+    document.querySelectorAll('.theme-option').forEach((button) => {
+      button.addEventListener('click', () => {
+        const themeId = (button as HTMLButtonElement).dataset.themeId;
+        if (themeId) {
+          setTheme(themeId);
+        }
+      });
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Escape to close modal
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('theme-settings-modal');
+        if (modal && !modal.classList.contains('hidden')) {
+          closeModal();
+        }
+      }
+    });
+  });
+</script>
+
+<style is:global>
+  /* Theme CSS Variables */
+  :root {
+    --theme-bgPrimary: #ffffff;
+    --theme-bgSecondary: #f9fafb;
+    --theme-bgTertiary: #f3f4f6;
+    --theme-textPrimary: #111827;
+    --theme-textSecondary: #4b5563;
+    --theme-textTertiary: #6b7280;
+    --theme-borderPrimary: #e5e7eb;
+    --theme-borderSecondary: #d1d5db;
+    --theme-accentPrimary: #6366f1;
+    --theme-accentSecondary: #818cf8;
+    --theme-accentHover: #4f46e5;
+    --theme-sidebarBg: #ffffff;
+    --theme-sidebarText: #374151;
+    --theme-sidebarHover: #f9fafb;
+    --theme-sidebarActive: #312e81;
+    --theme-sidebarActiveBg: #e0e7ff;
+    --theme-codeBg: #1f2937;
+    --theme-codeText: #f3f4f6;
+    --theme-codeInline: #f3f4f6;
+    --theme-linkColor: #6366f1;
+    --theme-linkHover: #4f46e5;
+    --theme-shadow: rgba(0, 0, 0, 0.1);
+  }
+</style>

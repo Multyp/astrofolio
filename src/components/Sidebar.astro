@@ -17,17 +17,17 @@ function renderFolder(folder: FolderNode, depth = 0): string {
     <div class="mb-1" data-folder>
       ${!isRoot ? `
         <button 
-          class="flex items-center w-full py-2 px-3 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          class="sidebar-folder-button flex items-center w-full py-2 px-3 rounded-lg text-left font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           style="margin-left: ${depth * 16}px"
           aria-expanded="true"
           aria-controls="${folderId}"
           data-folder-toggle
           id="toggle-${folderId}"
         >
-          <svg class="w-4 h-4 mr-2 transition-transform duration-200 text-slate-400 folder-chevron" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 mr-2 transition-transform duration-200 folder-chevron" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--theme-textTertiary)">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
-          <svg class="w-4 h-4 mr-2 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 mr-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--theme-textTertiary)">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
           </svg>
           <span>${folder.name}</span>
@@ -41,17 +41,15 @@ function renderFolder(folder: FolderNode, depth = 0): string {
           return `
             <a 
               href="${file.path}"
-              class="flex items-center py-2 px-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-                isActive 
-                  ? 'bg-indigo-100 text-indigo-900 font-semibold' 
-                  : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+              class="sidebar-link flex items-center py-2 px-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                isActive ? 'sidebar-link-active' : ''
               }"
               style="margin-left: ${(depth + (!isRoot ? 1 : 0)) * 16}px"
               ${isActive ? 'aria-current="page"' : ''}
               data-doc-link
               data-doc-title="${file.title.toLowerCase()}"
             >
-              <svg class="w-4 h-4 mr-2 flex-shrink-0 ${isActive ? 'text-indigo-600' : 'text-slate-400'}" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 mr-2 flex-shrink-0 sidebar-link-icon" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               <span class="truncate">${file.title}</span>
@@ -67,20 +65,20 @@ function renderFolder(folder: FolderNode, depth = 0): string {
 ---
 
 <aside 
-  class="fixed left-0 top-0 w-82 bg-white border-r border-slate-200 flex flex-col shadow-sm transition-transform duration-300 z-40"
+  class="fixed left-0 top-0 w-82 themed-sidebar-bg themed-border-r flex flex-col themed-shadow transition-transform duration-300 z-40"
   role="navigation"
   aria-label="Documentation navigation"
   id="docs-sidebar"
   style="height: 100dvh;"
 >
   <!-- Header -->
-  <div class="p-6 border-b border-slate-200 flex-shrink-0 bg-white">
+  <div class="p-6 themed-border-b flex-shrink-0 themed-sidebar-bg">
     <div class="flex items-center justify-between">
       <a 
         href="/" 
         class="block group focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-lg"
       >
-        <h2 class="text-2xl font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
+        <h2 class="text-2xl font-bold themed-sidebar-text group-hover:text-indigo-600 transition-colors">
           📚 Docs
         </h2>
       </a>
@@ -88,13 +86,13 @@ function renderFolder(folder: FolderNode, depth = 0): string {
   </div>
 
   <!-- Search Box -->
-  <div class="p-4 border-b border-slate-200 flex-shrink-0 bg-white">
+  <div class="p-4 themed-border-b flex-shrink-0 themed-sidebar-bg">
     <div class="relative">
       <label for="docs-search" class="sr-only">Search documentation</label>
       <input
         type="search"
         placeholder="Search docs..."
-        class="w-full py-2 pl-10 pr-4 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-700 placeholder-slate-400"
+        class="w-full py-2 pl-10 pr-4 text-sm themed-border rounded-lg themed-sidebar-bg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent themed-sidebar-text placeholder-slate-400"
         aria-label="Search documentation"
         id="docs-search"
       />
@@ -112,7 +110,7 @@ function renderFolder(folder: FolderNode, depth = 0): string {
   
   <!-- Navigation Content -->
   <nav 
-    class="flex-1 overflow-y-auto overflow-x-hidden pt-4 pb-4 pr-4 pl-4 bg-white"
+    class="flex-1 overflow-y-auto overflow-x-hidden pt-4 pb-4 pr-4 pl-4 themed-sidebar-bg"
     style="min-height: 0;"
     aria-label="Documentation sections"
     id="sidebar-nav"
@@ -121,9 +119,9 @@ function renderFolder(folder: FolderNode, depth = 0): string {
   </nav>
 
   <!-- Footer -->
-  <div class="p-4 border-t border-slate-200 flex-shrink-0 bg-white">
+  <div class="p-4 themed-border-t flex-shrink-0 themed-sidebar-bg">
     <button
-      class="flex items-center justify-center w-full py-2 px-4 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      class="flex items-center justify-center w-full py-2 px-4 text-sm themed-sidebar-text hover:bg-slate-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
       aria-label="Collapse sidebar"
       id="collapse-sidebar"
     >
@@ -137,7 +135,7 @@ function renderFolder(folder: FolderNode, depth = 0): string {
 
 <!-- Sidebar toggle button (visible when collapsed) -->
 <button
-  class="fixed left-0 top-1/2 transform -translate-y-1/2 bg-white border border-slate-200 rounded-r-lg p-2 shadow-md hover:bg-slate-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 z-50 hidden"
+  class="fixed left-0 top-1/2 transform -translate-y-1/2 themed-sidebar-bg themed-border rounded-r-lg p-2 themed-shadow hover:bg-slate-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 z-50 hidden"
   aria-label="Open sidebar"
   id="open-sidebar"
   style="margin-left: -4px;"
@@ -272,7 +270,68 @@ function renderFolder(folder: FolderNode, depth = 0): string {
   });
 </script>
 
-<style>
+<style is:global>
+  /* Themed sidebar classes */
+  .themed-sidebar-bg {
+    background-color: var(--theme-sidebarBg);
+  }
+  
+  .themed-sidebar-text {
+    color: var(--theme-sidebarText);
+  }
+  
+  .themed-border {
+    border-color: var(--theme-borderPrimary);
+  }
+  
+  .themed-border-r {
+    border-right-color: var(--theme-borderPrimary);
+  }
+  
+  .themed-border-b {
+    border-bottom-color: var(--theme-borderPrimary);
+  }
+  
+  .themed-border-t {
+    border-top-color: var(--theme-borderPrimary);
+  }
+  
+  .themed-shadow {
+    box-shadow: 0 1px 3px var(--theme-shadow);
+  }
+  
+  /* Sidebar folder buttons */
+  .sidebar-folder-button {
+    color: var(--theme-sidebarText);
+  }
+  
+  .sidebar-folder-button:hover {
+    background-color: var(--theme-sidebarHover);
+  }
+  
+  /* Sidebar links */
+  .sidebar-link {
+    color: var(--theme-sidebarText);
+  }
+  
+  .sidebar-link:hover {
+    background-color: var(--theme-sidebarHover);
+  }
+  
+  .sidebar-link-active {
+    background-color: var(--theme-sidebarActiveBg);
+    color: var(--theme-sidebarActive);
+    font-weight: 600;
+  }
+  
+  .sidebar-link-active .sidebar-link-icon {
+    color: var(--theme-accentPrimary);
+  }
+  
+  .sidebar-link:not(.sidebar-link-active) .sidebar-link-icon {
+    color: var(--theme-textTertiary);
+  }
+  
   .folder-content {
     overflow: visible;
   }

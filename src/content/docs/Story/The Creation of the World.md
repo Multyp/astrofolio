@@ -6,7 +6,8 @@ In its ceaseless motion, the Void reached a threshold where, for the first time,
 
 Yet the Void Sea did not collapse into stillness. At the same moment that patterns emerged, other currents surged outward, extending and unfolding in motion, growth, and renewal. From this impulse arose **[[Rethane, Goddess of Nature]]**, not born, but awakened, the Void’s first understanding of life moving through form. Where Lothas gave edges, Rethane gave pulse; where he set limits, she gave flow. Together, they were not opposites, but the first harmony within the chaos: structure and motion, form and change. Each defined the other, and through their unity, the Void became something more than itself.
 
-Though they would later be named and depicted as god and goddess, Lothas and Rethane were, in their essence, beyond such distinctions. These forms were not truths of being, but shapes of understanding, ways in which the first conscious minds could grasp forces too vast to comprehend in their pure state. Some say the gods chose these forms to teach; others believe mortals themselves cast these identities upon them. In time, both meanings became inseparable.
+Though Lothas and Rethane were beyond form and voice, they did not remain distant from their creation. When they first reached out to the awakened peoples, they chose not to speak as gods, but as teachers, shaping their presence, their voices, and even their manner of speech to match what mortal minds could understand.
+Thus the gods came to be known not only through power, but through words, spoken as the first peoples spoke, so that guidance might be heard not as command, but as counsel.
 
 ---
 ## The Shaping of the World
@@ -63,7 +64,7 @@ For many centuries after the awakening of the races, **[[Nythur]]** flourished u
 
 The mortal races thrived in harmony with the land. **[[Elves]]** tended the forests and deserts, humans cultivated fertile valleys and plains, dwarves mined deep into the mountains, and Beastfolks roamed the wild deserts freely. All sentient life was shaped and guided through **[[The World Tree, Elothir]]**, while animals, plants, and other creatures existed independently, born from Rethane’s early life-essence. Many early civilisations built shrines and sanctuaries at the roots of the tree, seeking to honour the divine spark that flowed through the world.
 
-In those early ages, understanding flowed more easily between peoples, not yet bound by fully formed tongues. Meaning passed through shared intent and divine resonance, and from this communion the first languages slowly emerged, each culture shaping sound and symbol from the same distant echo of the gods’ guidance.
+In those days, the gods did not stand apart from their creation in silence. They spoke to the peoples of Nythur in voices shaped for mortal ears, teaching them how to build, how to endure, and how to defend themselves against the dangers of the young world. Though divine in origin, their words were carried in mortal sound, so that wisdom would not overwhelm, but be learned.
 
 Even the simplest creatures, birds, fish, and beasts, seemed touched by divinity. Some early monks and clerics claimed to hear whispers of the gods in the rustling leaves, the roaring rivers, and the call of the wind. Magic, though subtle, flowed naturally in the world, a gift of the gods rather than a force to be wielded.
 
